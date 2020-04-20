@@ -10,9 +10,10 @@ type TwilioSMS struct {
 }
 
 func (t *TwilioSMS) Run() {
+	cs := gateway.Contacts{ Path: "./local.contacts.csv"}
 	s := usecase.Smssender{
-		Contacts: &gateway.Contacts{ Path: "./test.list"},
-		Message : &gateway.Message{Path:"./test.msg"},
+		Contacts: cs.FetchContacts(),
+		Message : &gateway.Message{Path:"./local.msg.txt"},
 		Client : &gateway.Client{
 			Sid: os.Getenv("TWILIO_SID"),
 			Token: os.Getenv("TWILIO_TOKEN"),

@@ -1,15 +1,14 @@
 package usecase
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/yuukichi-nankou/casample-go/domain"
+)
 
 type Smssender struct {
-	Contacts Contacts
+	Contacts []domain.Contact
 	Message Message
 	Client Client
-}
-
-type Contacts interface {
-    FetchNumbers() ([]string)
 }
 
 type Message interface {
@@ -21,12 +20,11 @@ type Client interface {
 }
 
 func (s *Smssender) Run() {
-	ns := s.Contacts.FetchNumbers()
 	m := s.Message.Get()
 
-	for k, n := range(ns) {
+	for k, c := range(s.Contacts) {
 		fmt.Println(k)
-		fmt.Println(n)
-		s.Client.Send(n, m)
+		fmt.Println(c.GetName())
+		s.Client.Send(c.GetNumber(), m)
 	}
 }
